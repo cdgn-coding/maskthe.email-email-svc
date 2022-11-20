@@ -1,0 +1,10 @@
+logger:
+  level: "development"
+sendgrid:
+  clientKey: "clientKey"
+email:
+  domain: "service.domain"
+http:
+  port: ":8080"
+rabbitmq:
+  url: "amqp://guest:guest@localhost:49154/"

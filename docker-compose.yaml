@@ -1,0 +1,11 @@
+services:
+  rabbitmq:
+    image: 'bitnami/rabbitmq:latest'
+    volumes:
+      - ./.init/rabbitmq/:/opt/bitnami/rabbitmq/etc/rabbitmq/
+    environment:
+      - RABBITMQ_USERNAME=user
+      - RABBITMQ_PASSWORD=pass
+    ports:
+      - 5672:5672
+      - 15672:15672
