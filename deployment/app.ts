@@ -1,11 +1,10 @@
 import * as kx from "@pulumi/kubernetesx";
-import { interpolate } from "@pulumi/pulumi";
-import { rabbitmqPassword, rabbitmqClusterIP, sendgridClientKey } from "./config";
+import { rabbitmqUrl, sendgridClientKey } from "./config";
 
 const env = {
     "GO_ENVIRONMENT": "production",
     "SENDGRID_CLIENTKEY": sendgridClientKey,
-    "RABBITMQ_URL": interpolate`amqp://user:${rabbitmqPassword}@${rabbitmqClusterIP}:5672/`,
+    "RABBITMQ_URL": rabbitmqUrl,
 }
 
 const componentName = "email-svc";

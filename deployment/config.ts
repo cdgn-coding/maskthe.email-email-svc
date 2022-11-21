@@ -6,5 +6,4 @@ const emailMaskingSvcStack = new pulumi.StackReference(
     config.require("email-masking-svc-stack")
 );
 export const sendgridClientKey = config.requireSecret("sendgridClientKey");
-export const rabbitmqPassword = config.requireSecret("rabbitmqPassword");
-export const rabbitmqClusterIP = emailMaskingSvcStack.requireOutput("rabbitmqClusterIP");
+export const rabbitmqUrl = emailMaskingSvcStack.requireOutput("rabbitmqUrl");
