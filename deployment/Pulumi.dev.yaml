@@ -1,0 +1,6 @@
+config:
+  email-svc-deplyment:email-masking-svc-stack: cdgn_pulumi_1/email-masking-svc-deployment/dev
+  email-svc-deplyment:rabbitmqPassword:
+    secure: AAABAFdNkTl/pH1CkONOVvAc3BW/mSQ3esyDCZPWXMKmxEjn
+  email-svc-deplyment:sendgridClientKey:
+    secure: AAABAIdl6j8H25nbAQPiLL2KFn7eD2WsqrHvmQJvZqvYJQrQ3dcTvYTEw2FXd38lrMrBPL5uqDl6yQKUI5SOo7PxIOT7+AXw+cDWeJWyLQ8V23LN1LQhoq6PN867J0XigR9PnKs=

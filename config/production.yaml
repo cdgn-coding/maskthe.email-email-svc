@@ -1,0 +1,11 @@
+logger:
+  level: "development"
+sendgrid:
+  clientKey: ""
+http:
+  port: ":8080"
+rabbitmq:
+  url: ""
+  queues:
+    emailsReceived: "emails"
+    emailsToSend: "sendEmails"

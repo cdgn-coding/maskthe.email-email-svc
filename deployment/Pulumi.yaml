@@ -1,0 +1,3 @@
+name: email-svc-deplyment
+runtime: nodejs
+description: A minimal Kubernetes TypeScript Pulumi program
