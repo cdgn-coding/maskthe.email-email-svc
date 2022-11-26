@@ -1,1 +1,1 @@
-export { appService } from "./app";
+export { appIngress, appService, appEndpoint } from "./app";

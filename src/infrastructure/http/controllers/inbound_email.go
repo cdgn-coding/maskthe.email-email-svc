@@ -37,12 +37,14 @@ func (controller InboundEmailController) ServeHTTP(writer http.ResponseWriter, r
 	validate := validator.New()
 	err = validate.Struct(email)
 	if err != nil {
+		controller.logger.Error(request.Context(), "invalid email: %v", err)
 		http.Error(writer, err.Error(), http.StatusBadRequest)
 		return
 	}
 
 	err = controller.receiveEmail.Execute(email)
 	if err != nil {
+		controller.logger.Error(request.Context(), "error receiving email: %v", err)
 		http.Error(writer, err.Error(), http.StatusInternalServerError)
 		return
 	}

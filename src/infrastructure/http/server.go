@@ -31,7 +31,7 @@ func NewServer() *Server {
 	sendgridClient := sendgrid.NewSendClient(sendgridKey)
 	outboundEmail := sendgridDriver.NewSendgridOutboundEmail(sendgridClient)
 
-	channel := rabbitmq.CreateConnection(config.GetString("rabbitmq.url"))
+	channel := rabbitmq.CreateConnection(logger, config.GetString("rabbitmq.url"))
 	sendEmail := services.NewSendEmail(outboundEmail)
 	emailsToSendConsumer := consumers.NewEmailConsumer(logger, sendEmail)
 
@@ -50,6 +50,7 @@ func NewServer() *Server {
 }
 
 func (s Server) Run() {
+	defer s.rabbitmqChannel.Close()
 	s.logger.Info("Starting up server")
 	s.bindConsumers()
 	s.bindRoutes()
@@ -68,7 +69,7 @@ func (s Server) bindRoutes() {
 		w.Write([]byte("healthy"))
 	})
 
-	router.Handle("/emails", s.inboundEmail).Methods(http.MethodPost)
+	router.Handle("/api/emails", s.inboundEmail).Methods(http.MethodPost)
 
 	s.logger.Fatal(http.ListenAndServe(s.config.GetString("http.port"), router))
 }
