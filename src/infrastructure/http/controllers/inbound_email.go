@@ -6,9 +6,10 @@ import (
 	"email-svc/src/infrastructure/configuration"
 	"errors"
 	"fmt"
+	"net/http"
+
 	"github.com/go-playground/validator/v10"
 	"github.com/sendgrid/sendgrid-go/helpers/inbound"
-	"net/http"
 )
 
 type InboundEmailController struct {
@@ -28,12 +29,16 @@ var inboundEmailRequestNotSecure = errors.New("inbound email not passed security
 var tooMuchRecipients = errors.New("inbound email has too much recipients")
 
 func (controller InboundEmailController) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
+	controller.logger.Info("Received inbound email, starting to process")
+
 	email, err := controller.parseInboundEmail(request)
 	if err != nil {
+		controller.logger.Error("Error parsing inbound email: %v", err)
 		http.Error(writer, err.Error(), http.StatusBadRequest)
 		return
 	}
 
+	controller.logger.Info("Validating http request for inbound email")
 	validate := validator.New()
 	err = validate.Struct(email)
 	if err != nil {
@@ -42,6 +47,7 @@ func (controller InboundEmailController) ServeHTTP(writer http.ResponseWriter, r
 		return
 	}
 
+	controller.logger.Info("Executing receive email service")
 	err = controller.receiveEmail.Execute(email)
 	if err != nil {
 		controller.logger.Error(request.Context(), "error receiving email: %v", err)

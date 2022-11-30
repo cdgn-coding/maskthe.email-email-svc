@@ -18,3 +18,10 @@
 config/develop.yaml
 config/stage.yaml
 config/prod.yaml
+
+kubeconfig.yaml
+kubeconfig.yml
+kubeconfig.json
+
+deployment/Pulumi.prod.yaml
+stack.json

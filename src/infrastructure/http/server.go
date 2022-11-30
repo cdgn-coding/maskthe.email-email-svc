@@ -8,10 +8,11 @@ import (
 	"email-svc/src/infrastructure/rabbitmq"
 	"email-svc/src/infrastructure/rabbitmq/queues"
 	sendgridDriver "email-svc/src/infrastructure/sendgrid"
+	"net/http"
+
 	"github.com/gorilla/mux"
 	amqp "github.com/rabbitmq/amqp091-go"
 	"github.com/sendgrid/sendgrid-go"
-	"net/http"
 )
 
 type Server struct {
@@ -37,7 +38,7 @@ func NewServer() *Server {
 
 	receivedEmailsTopic := config.GetString("rabbitmq.queues.emailsReceived")
 	emailsReceivedPublisher := queues.NewPublisher(channel, receivedEmailsTopic)
-	receiveEmail := services.NewReceiveEmail(emailsReceivedPublisher)
+	receiveEmail := services.NewReceiveEmail(emailsReceivedPublisher, logger)
 	inboundEmail := controllers.NewInboundEmailController(receiveEmail, logger)
 
 	return &Server{

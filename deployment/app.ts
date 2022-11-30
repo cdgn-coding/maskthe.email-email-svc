@@ -1,6 +1,11 @@
 import * as kx from "@pulumi/kubernetesx";
 import * as k8s from "@pulumi/kubernetes";
-import { rabbitmqEndpoint, sendgridClientKey } from "./config";
+import {
+    rabbitmqEndpoint,
+    sendgridClientKey,
+    baseOptions,
+} from "./config";
+import {fullImageName} from "./build";
 import {createService} from "./utils";
 
 const env = {
@@ -10,14 +15,13 @@ const env = {
 }
 
 const componentName = "email-svc";
-const imageName = "email-svc:v1";
 
 const pb = new kx.PodBuilder({
     containers: [
         {
             env,
             name: componentName,
-            image: imageName,
+            image: fullImageName,
             imagePullPolicy: "IfNotPresent",
             resources: { requests: { cpu: "128m", memory: "256Mi" } },
             ports: { http: 8080 },
@@ -34,7 +38,7 @@ const pb = new kx.PodBuilder({
 
 const deployment = new kx.Deployment(componentName, {
     spec: pb.asDeploymentSpec({ replicas: 1 }),
-});
+}, baseOptions);
 
 export const appService = createService({
     name: componentName,
@@ -53,7 +57,7 @@ export const appService = createService({
     metadata: {
         name: componentName,
     }
-}, deployment);
+}, deployment, baseOptions);
 
 export const appEndpoint = `${componentName}.default.svc.cluster.local`;
 
@@ -82,5 +86,6 @@ export const appIngress = new k8s.apiextensions.CustomResource(`${componentName}
         ],
     },
 }, {
+    ...baseOptions,
     dependsOn: appService
 })

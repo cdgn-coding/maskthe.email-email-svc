@@ -2,6 +2,7 @@ package queues
 
 import (
 	"context"
+
 	amqp "github.com/rabbitmq/amqp091-go"
 )
 
@@ -17,8 +18,9 @@ func (p *Publisher) Dispatch(message string) error {
 		false,
 		false,
 		amqp.Publishing{
-			ContentType: "text/plain",
-			Body:        []byte(message),
+			ContentType:  "text/plain",
+			Body:         []byte(message),
+			DeliveryMode: amqp.Persistent,
 		})
 }
 
