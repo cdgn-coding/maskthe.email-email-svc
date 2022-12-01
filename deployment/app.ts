@@ -74,7 +74,7 @@ export const appIngress = new k8s.apiextensions.CustomResource(`${componentName}
         ],
         routes: [
             {
-                match: "Path(`/api/emails`)",
+                match: "Host(`api.maskthe.email`) && Path(`/emails`)",
                 kind: "Rule",
                 services: [
                     {

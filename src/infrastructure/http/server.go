@@ -70,7 +70,7 @@ func (s Server) bindRoutes() {
 		w.Write([]byte("healthy"))
 	})
 
-	router.Handle("/api/emails", s.inboundEmail).Methods(http.MethodPost)
+	router.Handle("/emails", s.inboundEmail).Methods(http.MethodPost)
 
 	s.logger.Fatal(http.ListenAndServe(s.config.GetString("http.port"), router))
 }

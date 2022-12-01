@@ -32,7 +32,7 @@ func (e *EmailConsumer) Invoke(payload string) error {
 	err = e.sendEmail.Execute(command)
 
 	if err != nil {
-		e.logger.Error(fmt.Sprintf("Unable to send email. cause: %v", err))
+		e.logger.Error(fmt.Sprintf("Unable to send email. payload: %#v. cause: %v", command, err))
 		return err
 	}
 

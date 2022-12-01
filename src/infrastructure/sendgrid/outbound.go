@@ -3,9 +3,10 @@ package sendgrid
 import (
 	"email-svc/src/business/entities"
 	"fmt"
+	"net/http"
+
 	"github.com/sendgrid/sendgrid-go"
 	"github.com/sendgrid/sendgrid-go/helpers/mail"
-	"net/http"
 )
 
 type SendgridOutboundEmail struct {
@@ -29,7 +30,7 @@ func (s *SendgridOutboundEmail) Send(email *entities.Email) error {
 	}
 
 	if resp.StatusCode >= http.StatusBadRequest {
-		return fmt.Errorf("error sending email. Status Code: %d", resp.StatusCode)
+		return fmt.Errorf("error sending email. Status Code: %d. Body: %s", resp.StatusCode, resp.Body)
 	}
 
 	return nil
